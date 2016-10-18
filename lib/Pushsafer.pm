@@ -34,6 +34,9 @@ A user code file overriding parameters normally specified in mh.private.ini.   A
 					i => '11',
 					s => '5',
 					v => '1',
+					u => 'https://www.pushsafer.com',
+					ut => 'Open Pushsafer',
+					l => '60'
 		      });
 
 
@@ -42,7 +45,7 @@ Any of the parameters provided when initializing the Pushsafer instance may also
 provided on the message send.  They will be merged with and override the default
 values provided on initialization.   See the method documentation for below more details.
 
-  $push->notify( "Some important message", { t => 'Security Alert', i => 11 });
+  $push->notify( "Some important message", { t => 'Security Alert', i => 11, s => 4 });
 
 =head2 DESCRIPTION
 
@@ -95,13 +98,16 @@ Creates a new Pushsafer object. The parameter hash is optional.  Defaults will b
 B<This must be excluded from the primary misterhouse loop, or the acknowledgment checking and duplicate message rate limiting will be lost>
 
   my $push = Pushsafer->new( {
-			k    	=> "xxxx...",    	# Set the Private or Alias Key
-			t    	=> "Some title",	# Set default title for messages
-			d    	=> "111",		   	# Set the target device or device group (leaving this unset goes to all devices)
-			i    	=> "5",			   	# Set the icon to be displayed
-			s    	=> "3",   			# Set the sound to be played
-			v    	=> "1",   			# Set the vibration to be played
-			speak	=> 1,		   	  	# Enable or disable speak of notifications and acknowledgment
+			k    	=> "xxxx...",    					# Set the Private or Alias Key
+			t    	=> "Some title",					# Set default title for messages
+			d    	=> "111",		  				 	# Set the target device or device group (leaving this unset goes to all devices)
+			i    	=> "5",			  				 	# Set the icon to be displayed
+			s    	=> "3",   							# Set the sound to be played
+			v    	=> "1",   							# Set the vibration to be played
+			u    	=> "https://www.pushsafer.com",   	# A URL or URL scheme: https://www.pushsafer.com/en/url_schemes
+			ut    	=> "Open Pushsafer",				# Set the URLs title
+			l    	=> "60",   							# Integer number 0-43200: Time in minutes after which message automatically gets purged.
+			speak	=> 1,		   	  					# Enable or disable speak of notifications and acknowledgment
 	});
 
 Any of these parameters may be specified in mh.private.ini by prefixing them with "Pushsafer_"
@@ -164,7 +170,7 @@ in the POST to Pushsafer.com.  This allows support of any API parameter as defin
 	$push->notify("Some urgent message", {
 			k   => "xxxx...",      # Override the Private or Alias Key
             t   => "Some title",   # Override title of message
-            d   => "1111"			# Device or device-group id 
+            d   => "1111"		   # Device or device-group id 
 	});
 
 Notify will record the last message sent along with a timestamp.   If the duplicate message is sent within
